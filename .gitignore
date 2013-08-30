@@ -11,3 +11,12 @@
 *.lai
 *.la
 *.a
+
+# Dirs
+obj/
+bin/*
+!bin/data/
+
+# VS stuff
+*.sdf
+*.pdb
