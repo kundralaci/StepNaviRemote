@@ -3,11 +3,14 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	ofBackground(0);
-	x=0;
-	y=0;
-	z=0;
+	xA=0;
+	yA=0;
+	zA=0;
+	xM=0;
+	yM=0;
+	zM=0;
 	receiver.setup(2234);
-	box = ofMesh::box(2.0f,4.0f,0.2f);
+	box = ofBoxPrimitive(2,4,0.2f);
 	cam.setPosition(ofVec3f(0,0,5));
 	light.enable();
 	light.setDirectional();
@@ -28,28 +31,45 @@ void testApp::update(){
 
 		// check for mouse moved message
 		if(m.getAddress() == "/data/angles/A"){
-			// both the arguments are int32's
-			x = m.getArgAsInt32(0);
-			y = m.getArgAsInt32(1);
-			z = m.getArgAsInt32(2);
-		} 
+			float newX = m.getArgAsFloat(0) * 180.0f / PI;
+			float newY = m.getArgAsFloat(1) * 180.0f / PI;
+			float newZ = m.getArgAsFloat(2) * 180.0f / PI;
+			xA = newX;
+			yA = newY;
+			zA = newZ;
+		} else if(m.getAddress() == "/data/angles/M"){
+			float newX = m.getArgAsFloat(0) * 180.0f / PI;
+			float newY = m.getArgAsFloat(1) * 180.0f / PI;
+			float newZ = m.getArgAsFloat(2) * 180.0f / PI;
+			xM = newX;
+			yM = newY;
+			zM = newZ;
+		}  
 	}
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	ofSetColor(255,255,255);
+	
 	cam.begin();
-	ofPushStyle();
-	ofRotateX(-y);
-	ofRotateY(z);
-	ofRotateZ(x);
+
+	ofQuaternion qA(yA, ofVec3f(1,0,0), zA, ofVec3f(0,1,0), xA, ofVec3f(0,0,1));
+	box.setOrientation(qA);
 	box.draw();
-	ofPopStyle();
+
+	//ofQuaternion qM(yM, ofVec3f(1,0,0), zM, ofVec3f(0,1,0), -xM, ofVec3f(0,0,1));
+	//box.setPosition(3,0,0);
+	//box.setOrientation(qM);
+	//box.draw();
+
 	cam.end();
 	string buf;
-	buf = "X: " + ofToString(x) + " Y: " + ofToString(y) + " Z: " + ofToString(z);
+	buf = "A  |  X: " + ofToString(xA) + " Y: " + ofToString(yA) + " Z: " + ofToString(zA);
 	ofDrawBitmapString(buf, 20, 20);
+	buf = "M  |  X: " + ofToString(xM) + " Y: " + ofToString(yM) + " Z: " + ofToString(zM);
+	ofDrawBitmapString(buf, 20, 40);
+
 }
 
 //--------------------------------------------------------------

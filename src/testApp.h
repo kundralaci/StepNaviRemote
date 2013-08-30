@@ -21,9 +21,12 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		ofxOscReceiver receiver;
-		ofMesh box;
+		ofBoxPrimitive box;
 		ofCamera cam;
 		ofLight light;
 		
-		int x,y,z;
+		float xA,yA,zA;
+		float xM,yM,zM;
+
+		#define smooth 0.5f
 };
