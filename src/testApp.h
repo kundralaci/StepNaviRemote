@@ -24,9 +24,11 @@ class testApp : public ofBaseApp{
 		ofBoxPrimitive box;
 		ofCamera cam;
 		ofLight light;
+
+		ofQuaternion qA, qM;
 		
 		float xA,yA,zA;
 		float xM,yM,zM;
 
-		#define smooth 0.5f
+		#define smooth 0.9f
 };

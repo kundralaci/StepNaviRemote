@@ -37,6 +37,14 @@ void testApp::update(){
 			xA = newX;
 			yA = newY;
 			zA = newZ;
+			//ofQuaternion qAt( -yA, ofVec3f(1,0,0), 0, ofVec3f(0,1,0), 0, ofVec3f(0,0,1));
+			//ofQuaternion qAt( 0, ofVec3f(1,0,0), zA, ofVec3f(0,1,0), 0, ofVec3f(0,0,1));
+			//ofQuaternion qAt( -yA, ofVec3f(1,0,0), zA, ofVec3f(0,1,0), 0, ofVec3f(0,0,1));
+			ofQuaternion qAt( -yA, ofVec3f(1,0,0), zA, ofVec3f(0,1,0), -xA, ofVec3f(0,0,1));
+			qA.slerp( 1-smooth, qA, qAt);
+		} else if(m.getAddress() == "/data/quaternion/A"){
+			ofQuaternion qAt(m.getArgAsFloat(0), m.getArgAsFloat(3), -1*m.getArgAsFloat(2), -1*m.getArgAsFloat(1));
+			qA.slerp( 1-smooth, qA, qAt);
 		} else if(m.getAddress() == "/data/angles/M"){
 			float newX = m.getArgAsFloat(0) * 180.0f / PI;
 			float newY = m.getArgAsFloat(1) * 180.0f / PI;
@@ -54,7 +62,6 @@ void testApp::draw(){
 	
 	cam.begin();
 
-	ofQuaternion qA(yA, ofVec3f(1,0,0), zA, ofVec3f(0,1,0), xA, ofVec3f(0,0,1));
 	box.setOrientation(qA);
 	box.draw();
 
