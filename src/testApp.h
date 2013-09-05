@@ -30,5 +30,7 @@ class testApp : public ofBaseApp{
 		float xA,yA,zA;
 		float xM,yM,zM;
 
+		int mode;
+
 		#define smooth 0.9f
 };

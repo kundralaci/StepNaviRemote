@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	ofBackground(0);
+	mode = 1;
 	xA=0;
 	yA=0;
 	zA=0;
@@ -45,6 +46,9 @@ void testApp::update(){
 		} else if(m.getAddress() == "/data/quaternion/A"){
 			ofQuaternion qAt(m.getArgAsFloat(0), m.getArgAsFloat(3), -1*m.getArgAsFloat(2), -1*m.getArgAsFloat(1));
 			qA.slerp( 1-smooth, qA, qAt);
+		} else if(m.getAddress() == "/data/quaternion/M"){
+			ofQuaternion qMt(m.getArgAsFloat(0), m.getArgAsFloat(3), -1*m.getArgAsFloat(2), -1*m.getArgAsFloat(1));
+			qM = qMt;
 		} else if(m.getAddress() == "/data/angles/M"){
 			float newX = m.getArgAsFloat(0) * 180.0f / PI;
 			float newY = m.getArgAsFloat(1) * 180.0f / PI;
@@ -61,14 +65,12 @@ void testApp::draw(){
 	ofSetColor(255,255,255);
 	
 	cam.begin();
-
-	box.setOrientation(qA);
+	if (mode == 0){
+		box.setOrientation(qA);
+	} else {
+		box.setOrientation(qM);
+	}
 	box.draw();
-
-	//ofQuaternion qM(yM, ofVec3f(1,0,0), zM, ofVec3f(0,1,0), -xM, ofVec3f(0,0,1));
-	//box.setPosition(3,0,0);
-	//box.setOrientation(qM);
-	//box.draw();
 
 	cam.end();
 	string buf;
@@ -86,6 +88,11 @@ void testApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
+	if (key == 'm'){
+		mode = 1;
+	} else if (key == 'a'){
+		mode = 0;
+	}
 
 }
 
